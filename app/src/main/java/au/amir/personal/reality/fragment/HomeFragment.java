@@ -1,6 +1,7 @@
 package au.amir.personal.reality.fragment;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,8 +21,10 @@ import au.amir.personal.reality.service.MyService;
 public class HomeFragment extends AbstractFragment    {
 
     EditText SearchQuery =null;
+    View view;
     RecyclerView recyclerView;
     FactsAdapter factsAdapter;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private static final String TAG = HomeFragment.class.getName();
 
     @Override
@@ -36,14 +39,22 @@ public class HomeFragment extends AbstractFragment    {
 
     @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+        view = super.onCreateView(inflater, container, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.facts_rc_view);
         factsAdapter = new FactsAdapter(getActivity() );
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.MySwipeRefreshLayout);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         recyclerView.setAdapter(factsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                HomeFragment.this.performRefresh();  // perform swipe view refresh on recyclerview
+            }
+        });
         return view;
     }
 
@@ -86,7 +97,14 @@ public class HomeFragment extends AbstractFragment    {
                // dismissProgressDialog();  // close the dialog
                 ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
                 actionBar.setTitle(MyService.getInstance().getFactsSheet().getTitle());
-                factsAdapter.notifyDataSetChanged();
+
+                mSwipeRefreshLayout.setRefreshing(false);
+
+                factsAdapter = new FactsAdapter(getActivity() );
+                recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+                recyclerView.setAdapter(factsAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                
                 break;
         }
         return true;
