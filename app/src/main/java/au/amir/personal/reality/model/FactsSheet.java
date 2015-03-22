@@ -2,9 +2,6 @@ package au.amir.personal.reality.model;
 
 import java.util.List;
 
-/**
- * Created by amir on 3/20/2015.
- */
 
 public class FactsSheet {
     private String title;

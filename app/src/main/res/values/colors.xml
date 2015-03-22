@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+
+    <color name="BarColor">#009688</color>
+    <color name="blue2">#0033CC</color>
+    <color name="blue25">#0033CC</color>
+
+    <color name="black">#000000</color>
+
+    <color name="background">#55000000</color>
+
+</resources>
