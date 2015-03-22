@@ -25,6 +25,7 @@ android {
         targetSdkVersion 14
         versionCode 1
         versionName "1.0"
+        testApplicationId "au.amir.personal.reality.tests"
     }
     buildTypes {
         release {
